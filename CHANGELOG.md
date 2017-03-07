@@ -70,6 +70,7 @@ New features
     - `Mpdf\Image\ImageProcessor`
     - `Mpdf\Image\ImageTypeGuesser`
     - `Mpdf\Conversion\*` classes
+- Custom document properties (idea by @zarubik in #142)
 
 Git repository enhancements
 ---------------------------
