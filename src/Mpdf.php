@@ -1788,7 +1788,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 		}
 		if ($this->visibility != 'visible') {
 			$this->_out('EMC');
-			$this->hasOC = intval($this->hasOC);
+			$this->hasOC = (int)($this->hasOC);
 		}
 		if ($v == 'printonly') {
 			$this->_out('/OC /OC1 BDC');
@@ -3095,10 +3095,10 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 		}
 		foreach ($colors as $sc) {
 			list($name, $c, $m, $y, $k) = preg_split("/\t/", $sc);
-			$c = intval($c);
-			$m = intval($m);
-			$y = intval($y);
-			$k = intval($k);
+			$c = (int)($c);
+			$m = (int)($m);
+			$y = (int)($y);
+			$k = (int)($k);
 			$this->AddSpotColor($name, $c, $m, $y, $k);
 		}
 	}
@@ -4359,7 +4359,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 
 	function SetSpacing($cs, $ws)
 	{
-		if (intval($cs * 1000) == 0) {
+		if ((int)($cs * 1000) == 0) {
 			$cs = 0;
 		}
 		if ($cs) {
@@ -4368,7 +4368,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 			$this->_out('BT 0 Tc ET');
 		}
 		$this->charspacing = $cs;
-		if (intval($ws * 1000) == 0) {
+		if ((int)($ws * 1000) == 0) {
 			$ws = 0;
 		}
 		if ($ws) {
@@ -4440,7 +4440,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 			// Number of kashida points = $k_ctr
 			// $useKashida is a % value from CurrentFont/config_fonts.php
 			// % ratio divided between word-spacing and kashida-spacing
-			$kashida_space_ratio = intval($this->CurrentFont['useKashida']) / 100;
+			$kashida_space_ratio = (int)($this->CurrentFont['useKashida']) / 100;
 
 
 			$kashida_space = $w * $kashida_space_ratio;
@@ -5410,7 +5410,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 				if ($kashida > $tatw) {
 					// Insert multiple tatweel characters, repositioning the last one to give correct total length
 					$fontstretch = 100;
-					$nt = intval($kashida / $tatw);
+					$nt = (int)($kashida / $tatw);
 					$nudgeback = (($nt + 1) * $tatw) - $kashida;
 					$optx = str_repeat($tx, $nt);
 					if ($sipset) {
@@ -9023,7 +9023,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 
 		if ($this->debug && error_get_last()) {
 			$e = error_get_last();
-			if (($e['type'] < 2048 && $e['type'] != 8) || (intval($e['type']) & intval(ini_get("error_reporting")))) {
+			if (($e['type'] < 2048 && $e['type'] != 8) || ((int)($e['type']) & (int)(ini_get("error_reporting")))) {
 				throw new \Mpdf\MpdfException(
 					sprintf('Error detected. PDF file generation aborted: %s', $e['message']),
 					$e['type'],
@@ -9897,7 +9897,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 		/* -- COLUMNS -- */
 		// Save cross-reference to Column buffer
 		$ref = count($this->PageAnnots[$this->page]) - 1;
-		$this->columnAnnots[$this->CurrCol][intval($this->x)][intval($this->y)] = $ref;
+		$this->columnAnnots[$this->CurrCol][(int)($this->x)][(int)($this->y)] = $ref;
 		/* -- END COLUMNS -- */
 	}
 
@@ -9916,7 +9916,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 						$used = $f['used'];
 						if ($used) {
 							$nChars = (ord($f['cw'][0]) << 8) + ord($f['cw'][1]);
-							$usage = intval(count($f['subset']) * 100 / $nChars);
+							$usage = (int)(count($f['subset']) * 100 / $nChars);
 							$fsize = $info['length1'];
 							// Always subset the very large TTF files
 							if ($fsize > ($this->maxTTFFilesize * 1024)) {
@@ -13056,7 +13056,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 					}
 
 					//Vertical align
-					if ($R && intval($R) > 0 && isset($va) && $va != 'B') {
+					if ($R && (int)($R) > 0 && isset($va) && $va != 'B') {
 						$va = 'B';
 					}
 
@@ -13181,7 +13181,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 					//Print cell content
 					if (!empty($textbuffer)) {
 						if ($horf == 'F' && preg_match('/{colsum([0-9]*)[_]*}/', $textbuffer[0][0], $m)) {
-							$rep = sprintf("%01." . intval($m[1]) . "f", $this->colsums[$colctr - 1]);
+							$rep = sprintf("%01." . (int)($m[1]) . "f", $this->colsums[$colctr - 1]);
 							$textbuffer[0][0] = preg_replace('/{colsum[0-9_]*}/', $rep, $textbuffer[0][0]);
 						}
 
@@ -13193,7 +13193,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 							$cellFontHeight = ($cellPtSize / Mpdf::SCALE);
 							$opx = $this->x;
 							$opy = $this->y;
-							$angle = intval($R);
+							$angle = (int)($R);
 
 							// Only allow 45 - 90 degrees (when bottom-aligned) or -90
 							if ($angle > 90) {
@@ -13660,7 +13660,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 		$s = max($l, $r);
 		$tw = $c + 2 * $s;
 		if ($tw > 0) {
-			return [intval($s * 100 / $tw), intval($c * 100 / $tw), intval($s * 100 / $tw)];
+			return [(int)($s * 100 / $tw), (int)($c * 100 / $tw), (int)($s * 100 / $tw)];
 		} else {
 			return [33, 33, 33];
 		}
@@ -14895,7 +14895,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 			$currpos = $this->page * 1000 + $this->y;
 			if (isset($this->blk[$this->blklvl]['float_endpos']) && $this->blk[$this->blklvl]['float_endpos'] > $currpos) {
 				$old_page = $this->page;
-				$new_page = intval($this->blk[$this->blklvl]['float_endpos'] / 1000);
+				$new_page = (int)($this->blk[$this->blklvl]['float_endpos'] / 1000);
 				if ($old_page != $new_page) {
 					$s = $this->PrintPageBackgrounds();
 					// Writes after the marker so not overwritten later by page background etc.
@@ -16319,7 +16319,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 			return;
 		}
 		$old_page = $this->page;
-		$new_page = intval($end / 1000);
+		$new_page = (int)($end / 1000);
 		if ($old_page != $new_page) {
 			$s = $this->PrintPageBackgrounds();
 			// Writes after the marker so not overwritten later by page background etc.
@@ -22180,18 +22180,18 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 
 	function setBorder(&$var, $flag, $set = true)
 	{
-		$flag = intval($flag);
+		$flag = (int)($flag);
 		if ($set) {
 			$set = true;
 		}
-		$var = intval($var);
+		$var = (int)($var);
 		$var = $set ? ($var | $flag) : ($var & ~$flag);
 	}
 
 	function issetBorder($var, $flag)
 	{
-		$flag = intval($flag);
-		$var = intval($var);
+		$flag = (int)($flag);
+		$var = (int)($var);
 		return (($var & $flag) == $flag);
 	}
 
@@ -23605,7 +23605,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 					}
 
 					//VERTICAL ALIGN
-					if ($cell['R'] && intval($cell['R']) > 0 && intval($cell['R']) < 90 && isset($cell['va']) && $cell['va'] != 'B') {
+					if ($cell['R'] && (int)($cell['R']) > 0 && (int)($cell['R']) < 90 && isset($cell['va']) && $cell['va'] != 'B') {
 						$cell['va'] = 'B';
 					}
 					if (!isset($cell['va']) || $cell['va'] == 'M') {
@@ -23626,7 +23626,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 						if ($level == 1) {
 							if (isset($table['is_tfoot'][$i]) && $table['is_tfoot'][$i]) {
 								if (preg_match('/{colsum([0-9]*)[_]*}/', $cell['textbuffer'][0][0], $m)) {
-									$rep = sprintf("%01." . intval($m[1]) . "f", $this->colsums[$j]);
+									$rep = sprintf("%01." . (int)($m[1]) . "f", $this->colsums[$j]);
 									$cell['textbuffer'][0][0] = preg_replace('/{colsum[0-9_]*}/', $rep, $cell['textbuffer'][0][0]);
 								}
 							} elseif (!isset($table['is_thead'][$i])) {
@@ -23661,7 +23661,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 							}
 							$cellFontHeight = ($cellPtSize / Mpdf::SCALE);
 							$opx = $this->x;
-							$angle = intval($cell['R']);
+							$angle = (int)($cell['R']);
 							// Only allow 45 to 89 degrees (when bottom-aligned) or exactly 90 or -90
 							if ($angle > 90) {
 								$angle = 90;
@@ -26169,29 +26169,29 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 						$lowest_bottom_y = $clb;
 					}
 					// Adjust LINKS
-					if (isset($this->columnLinks[$s['col']][intval($s['x'])][intval($s['y'])])) {
-						$ref = $this->columnLinks[$s['col']][intval($s['x'])][intval($s['y'])];
+					if (isset($this->columnLinks[$s['col']][(int)($s['x'])][(int)($s['y'])])) {
+						$ref = $this->columnLinks[$s['col']][(int)($s['x'])][(int)($s['y'])];
 						$this->PageLinks[$this->page][$ref][0] += ($xadj * Mpdf::SCALE);
 						$this->PageLinks[$this->page][$ref][1] -= ($yadj * Mpdf::SCALE);
-						unset($this->columnLinks[$s['col']][intval($s['x'])][intval($s['y'])]);
+						unset($this->columnLinks[$s['col']][(int)($s['x'])][(int)($s['y'])]);
 					}
 					// Adjust FORM FIELDS
-					if (isset($this->columnForms[$s['col']][intval($s['x'])][intval($s['y'])])) {
-						$ref = $this->columnForms[$s['col']][intval($s['x'])][intval($s['y'])];
+					if (isset($this->columnForms[$s['col']][(int)($s['x'])][(int)($s['y'])])) {
+						$ref = $this->columnForms[$s['col']][(int)($s['x'])][(int)($s['y'])];
 						$this->form->forms[$ref]['x'] += ($xadj);
 						$this->form->forms[$ref]['y'] += ($yadj);
-						unset($this->columnForms[$s['col']][intval($s['x'])][intval($s['y'])]);
+						unset($this->columnForms[$s['col']][(int)($s['x'])][(int)($s['y'])]);
 					}
 					/* -- ANNOTATIONS -- */
-					if (isset($this->columnAnnots[$s['col']][intval($s['x'])][intval($s['y'])])) {
-						$ref = $this->columnAnnots[$s['col']][intval($s['x'])][intval($s['y'])];
+					if (isset($this->columnAnnots[$s['col']][(int)($s['x'])][(int)($s['y'])])) {
+						$ref = $this->columnAnnots[$s['col']][(int)($s['x'])][(int)($s['y'])];
 						if ($this->PageAnnots[$this->page][$ref]['x'] < 0) {
 							$this->PageAnnots[$this->page][$ref]['x'] -= ($xadj);
 						} else {
 							$this->PageAnnots[$this->page][$ref]['x'] += ($xadj);
 						}
 						$this->PageAnnots[$this->page][$ref]['y'] += ($yadj); // unlike PageLinks, Page annots has y values from top in mm
-						unset($this->columnAnnots[$s['col']][intval($s['x'])][intval($s['y'])]);
+						unset($this->columnAnnots[$s['col']][(int)($s['x'])][(int)($s['y'])]);
 					}
 					/* -- END ANNOTATIONS -- */
 				}
@@ -26227,24 +26227,24 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 							$yadj = ($s['newy'] - $this->y0) * ($ratio - 1);
 
 							// Adjust LINKS
-							if (isset($this->columnLinks[$s['col']][intval($s['x'])][intval($s['y'])])) {
-								$ref = $this->columnLinks[$s['col']][intval($s['x'])][intval($s['y'])];
+							if (isset($this->columnLinks[$s['col']][(int)($s['x'])][(int)($s['y'])])) {
+								$ref = $this->columnLinks[$s['col']][(int)($s['x'])][(int)($s['y'])];
 								$this->PageLinks[$this->page][$ref][1] -= ($yadj * Mpdf::SCALE); // y value
 								$this->PageLinks[$this->page][$ref][3] *= $ratio; // height
-								unset($this->columnLinks[$s['col']][intval($s['x'])][intval($s['y'])]);
+								unset($this->columnLinks[$s['col']][(int)($s['x'])][(int)($s['y'])]);
 							}
 							// Adjust FORM FIELDS
-							if (isset($this->columnForms[$s['col']][intval($s['x'])][intval($s['y'])])) {
-								$ref = $this->columnForms[$s['col']][intval($s['x'])][intval($s['y'])];
+							if (isset($this->columnForms[$s['col']][(int)($s['x'])][(int)($s['y'])])) {
+								$ref = $this->columnForms[$s['col']][(int)($s['x'])][(int)($s['y'])];
 								$this->form->forms[$ref]['x'] += ($xadj);
 								$this->form->forms[$ref]['y'] += ($yadj);
-								unset($this->columnForms[$s['col']][intval($s['x'])][intval($s['y'])]);
+								unset($this->columnForms[$s['col']][(int)($s['x'])][(int)($s['y'])]);
 							}
 							/* -- ANNOTATIONS -- */
-							if (isset($this->columnAnnots[$s['col']][intval($s['x'])][intval($s['y'])])) {
-								$ref = $this->columnAnnots[$s['col']][intval($s['x'])][intval($s['y'])];
+							if (isset($this->columnAnnots[$s['col']][(int)($s['x'])][(int)($s['y'])])) {
+								$ref = $this->columnAnnots[$s['col']][(int)($s['x'])][(int)($s['y'])];
 								$this->PageAnnots[$this->page][$ref]['y'] += ($yadj);
-								unset($this->columnAnnots[$s['col']][intval($s['x'])][intval($s['y'])]);
+								unset($this->columnAnnots[$s['col']][(int)($s['x'])][(int)($s['y'])]);
 							}
 							/* -- END ANNOTATIONS -- */
 						}
@@ -26342,24 +26342,24 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 					// Adjust LINKS
 					if (isset($s['rel_y'])) { // only process position sensitive data
 						// otherwise triggers for all entries in column buffer (.e.g. formatting) and makes below adjustments more than once
-						if (isset($this->columnLinks[$s['col']][intval($s['x'])][intval($s['y'])])) {
-							$ref = $this->columnLinks[$s['col']][intval($s['x'])][intval($s['y'])];
+						if (isset($this->columnLinks[$s['col']][(int)($s['x'])][(int)($s['y'])])) {
+							$ref = $this->columnLinks[$s['col']][(int)($s['x'])][(int)($s['y'])];
 							$this->PageLinks[$this->page][$ref][1] -= ($yadj * Mpdf::SCALE); // y value
 							$this->PageLinks[$this->page][$ref][3] *= $ratio; // height
-							unset($this->columnLinks[$s['col']][intval($s['x'])][intval($s['y'])]);
+							unset($this->columnLinks[$s['col']][(int)($s['x'])][(int)($s['y'])]);
 						}
 						// Adjust FORM FIELDS
-						if (isset($this->columnForms[$s['col']][intval($s['x'])][intval($s['y'])])) {
-							$ref = $this->columnForms[$s['col']][intval($s['x'])][intval($s['y'])];
+						if (isset($this->columnForms[$s['col']][(int)($s['x'])][(int)($s['y'])])) {
+							$ref = $this->columnForms[$s['col']][(int)($s['x'])][(int)($s['y'])];
 							$this->form->forms[$ref]['x'] += ($xadj);
 							$this->form->forms[$ref]['y'] += ($yadj);
-							unset($this->columnForms[$s['col']][intval($s['x'])][intval($s['y'])]);
+							unset($this->columnForms[$s['col']][(int)($s['x'])][(int)($s['y'])]);
 						}
 						/* -- ANNOTATIONS -- */
-						if (isset($this->columnAnnots[$s['col']][intval($s['x'])][intval($s['y'])])) {
-							$ref = $this->columnAnnots[$s['col']][intval($s['x'])][intval($s['y'])];
+						if (isset($this->columnAnnots[$s['col']][(int)($s['x'])][(int)($s['y'])])) {
+							$ref = $this->columnAnnots[$s['col']][(int)($s['x'])][(int)($s['y'])];
 							$this->PageAnnots[$this->page][$ref]['y'] += ($yadj);
-							unset($this->columnAnnots[$s['col']][intval($s['x'])][intval($s['y'])]);
+							unset($this->columnAnnots[$s['col']][(int)($s['x'])][(int)($s['y'])]);
 						}
 						/* -- END ANNOTATIONS -- */
 					}
@@ -28700,7 +28700,7 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 		$xref_objid = $m[1];
 		preg_match_all('/(\d{10}) (\d{5}) (f|n)/', $m[2], $x);
 		for ($i = 0; $i < count($x[0]); $i++) {
-			$xref[] = [intval($x[1][$i]), $x[2][$i], $x[3][$i]];
+			$xref[] = [(int)($x[1][$i]), $x[2][$i], $x[3][$i]];
 		}
 
 		$changes = [];
